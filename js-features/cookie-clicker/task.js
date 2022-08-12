@@ -14,7 +14,7 @@ cookie.onclick = function() {
         cookie.height /= 1.5;
         speedClick = (1 / (dateBefore - dateBeforeNew)) * 1000;
     } else {
-        dateBefore2 = new Date();
+        dateBeforeNew = new Date();
         cookie.width *= 1.5;
         cookie.height *= 1.5;
         speedClick = (1 / (dateBeforeNew - dateBefore)) * 1000;
