@@ -14,6 +14,7 @@ for (let element of modal__closeArray) {
 }
 
 show_success.onclick = () => {
+    modal_main.className = 'modal';
     modal_success.className = 'modal modal_active';
     for (let element of modal__closeArray) {
         element.onclick = function() {
