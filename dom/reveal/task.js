@@ -1,19 +1,22 @@
 const reveal = document.querySelector('.reveal');
 
 function isVisible(el) {
-    const { top, bottom } = el.getBoundingClientRect();
+    let coords = el.getBoundingClientRect();
+    let windowHeight = document.documentElement.clientHeight;
 
-    if (bottom < 0) {
-        reveal.classList.remove('reveal_active')
-        return false
-    }
+    let topVisible = coords.top > 0 && coords.top < windowHeight;
 
-    if (top > window.innerHeight) {
-        reveal.classList.remove('reveal_active')
-        return false
-    }
+    let bottomVisible = coords.bottom < windowHeight && coords.bottom > 0;
 
-    reveal.classList.add('reveal_active');
+    return topVisible || bottomVisible;
 }
 
-setInterval(() => isVisible(reveal), 0);
+function showVisible() {
+
+    if (isVisible(reveal)) {
+        reveal.classList.add('reveal_active');
+    } else {
+        reveal.classList.remove('reveal_active');
+    }
+}
+window.addEventListener('scroll', showVisible);
