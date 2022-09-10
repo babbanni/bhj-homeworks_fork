@@ -7,15 +7,12 @@ tabs.forEach(el => {
     el.addEventListener('click', () => {
         let activeTabIndex = tabs.findIndex(activeTab);
         let activeContentIndex = tab__content.findIndex(activeContent);
+        let activeEl = tabs.findIndex((tab) => tab === el);
         if (!el.className.includes('tab_active')) {
             tabs[activeTabIndex].classList.remove('tab_active');
             el.classList.add('tab_active');
+            tab__content[activeContentIndex].classList.remove('tab__content_active');
+            tab__content[activeEl].classList.add('tab__content_active');
         }
-        tab__content.forEach(elem => {
-            if (!elem.className.includes('tab__content_active')) {
-                tab__content[activeContentIndex].classList.remove('tab__content_active');
-                tab__content[activeTabIndex].classList.add('tab__content_active');
-            }
-        })
-    })
-})
+    });
+});
