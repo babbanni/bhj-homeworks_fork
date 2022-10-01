@@ -6,15 +6,18 @@ tooltipHas.forEach(elem => {
         e.preventDefault();
         elem.appendChild(tooltip);
 
-        elem.firstElementChild.outerHTML = `
-        <div class="tooltip" style="left: 0; top: 0">
+        if (elem.childElementCount > 1) {
+            elem.lastElementChild.remove();
+        }
+
+        if (elem.firstElementChild.className.includes('tooltip_active')) {
+            elem.firstElementChild.classList.remove('tooltip_active');
+        } else {
+            elem.firstElementChild.outerHTML = `
+        <div class="tooltip" style="left: auto; top: auto">
             ${elem.title}
         </div>`;
-        if (elem.firstElementChild.className.includes('tooltip_active')) {
-            debugger
-            elem.firstElementChild.remove();
-        } else {
-            elem.firstElementChild.className = 'tooltip_active';
+            elem.firstElementChild.classList.add('tooltip_active');
         }
     });
 });
