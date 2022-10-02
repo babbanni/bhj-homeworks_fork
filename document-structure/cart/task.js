@@ -27,13 +27,19 @@ quantityControl.forEach(elem => {
 btns.forEach(elem => {
     elem.addEventListener('click', (e) => {
         e.preventDefault();
-
         cartProducts.appendChild(productInCart);
-        cartProducts.lastElementChild.outerHTML = `
-        <div class="cart__product" data-id="${elem.closest('.product').dataset.id}">
-            <img class="cart__product-image" src="${elem.closest('.product').children[1].src}">
-            <div class="cart__product-count">${elem.parentElement.children[1].innerText}</div>
-        </div>`
-
-    })
-})
+        debugger
+        let childrenArray = Array.from(cartProducts.children);
+        childrenArray.forEach(el => {
+            if (el.dataset.id === elem.closest('.product').dataset.id) {
+                el.lastElementChild.innerText = `${Number(el.lastElementChild.innerText) + Number(elem.parentElement.children[1].children[1].innerText)}`;
+            } else {
+                cartProducts.lastElementChild.outerHTML = `
+                <div class="cart__product" data-id="${elem.closest('.product').dataset.id}">
+                    <img class="cart__product-image" src="${elem.closest('.product').children[1].src}">
+                    <div class="cart__product-count">${elem.parentElement.children[1].children[1].innerText}</div>
+                </div>`
+            }
+        });
+    });
+});
