@@ -1,45 +1,37 @@
-const product = document.querySelectorAll('.product');
-const quantityControl = document.querySelectorAll('.product__quantity-control');
-const btns = document.querySelectorAll('.product__add');
-let cartProducts = document.querySelector('.cart__products');
-let productInCart = document.createElement('div');
+const products = document.querySelectorAll('.product');
+cart = document.querySelector('.cart__products');
 
-quantityControl.forEach(elem => {
-    elem.addEventListener('click', () => {
-        if (elem.className.includes('product__quantity-control_dec')) {
-            let count = elem.parentElement.children[1].innerText;
-            count = +count;
-            if (count === 1) {
-                return
-            } else {
-                count--;
-                elem.parentElement.children[1].innerText = `${count}`;
-            }
-        } else {
-            let count = elem.parentElement.children[1].innerText;
-            count = +count;
-            count++;
-            elem.parentElement.children[1].innerText = `${count}`;
+products.forEach(elem => {
+    let controls = elem.querySelector('.product__controls');
+    controls.addEventListener('click', e => {
+        let quantity = e.currentTarget.querySelector('.product__quantity-value');
+        let value = Number(quantity.textContent);
+
+        if (e.target.classList.contains('product__quantity-control_dec') && value !== 1) {
+            value--;
+            quantity.textContent = value;
         }
-    });
-});
+        if (e.target.classList.contains('product__quantity-control_inc')) {
+            value++;
+            quantity.textContent = value;
+        }
+        if (e.target.classList.contains('product__add')) {
+            let srcImage = elem.querySelector('.product__image').getAttribute('src');
+            let productsId = Array.from(cart.querySelectorAll('.cart__product'));
+            let hasId = productsId.find(el => el.dataset.id === elem.dataset.id);
 
-btns.forEach(elem => {
-    elem.addEventListener('click', (e) => {
-        e.preventDefault();
-        cartProducts.appendChild(productInCart);
-        debugger
-        let childrenArray = Array.from(cartProducts.children);
-        childrenArray.forEach(el => {
-            if (el.dataset.id === elem.closest('.product').dataset.id) {
-                el.lastElementChild.innerText = `${Number(el.lastElementChild.innerText) + Number(elem.parentElement.children[1].children[1].innerText)}`;
+            if (hasId) {
+                let cartValue = hasId.querySelector('.cart__product-count');
+                cartValue.textContent = Number(cartValue.textContent) + value;
             } else {
-                cartProducts.lastElementChild.outerHTML = `
-                <div class="cart__product" data-id="${elem.closest('.product').dataset.id}">
-                    <img class="cart__product-image" src="${elem.closest('.product').children[1].src}">
-                    <div class="cart__product-count">${elem.parentElement.children[1].children[1].innerText}</div>
-                </div>`
+                let setCartId = elem.dataset.id;
+                cart.innerHTML += `
+                <div class="cart__product" data-id="${setCartId}">
+                    <img class="cart__product-image" src="${srcImage}">
+                    <div class="cart__product-count"> ${quantity.textContent}</div>
+                </div>
+                `;
             }
-        });
+        }
     });
 });
